@@ -119,3 +119,107 @@ for(const i =0; i<5; i++){...};
 for(const i of [1,2,3]){...};
 for(const key in {a: 1, b: 2}){...};
 ```
+
+---
+
+### 数据类型
+
+JS中基本数据类型有7种：*Number*, *String*, *Null*, *Undefined*, *Object*, *Boolean*, *Symbol*
+
+#### *Undefined* 
+
+当声明了一个变量却没有初始化时，该变量的值即为*undefined*。
+```js
+let a;
+console.log(typeof a);  // undefined
+```
+
+#### *Null*
+
+*null* 表示空对象指针。如果要定义一个变量用来在后面保存数据，但是初始时不确定具体值时，可以使用 *null* 来赋值，以区分 *undefined*。
+
+> 注意，`null == undefined`是成立的，而且`typeof null`返回的是 *Object*
+
+#### *Boolean*
+
+有`true`和`false`两种结果，可以使用`Boolean()`对某些数据进行转换：
+
+| 数据类型  |   true   |   false   |
+| :-------: | :------: | :-------: |
+|  Boolean  |   true   |   false   |
+|  String   |   非空   |    ""     |
+|  Number   |   非0    | 0 和 NaN  |
+|  Object   | 非空对象 |   null    |
+| Undefined |    无    | undefined |
+
+#### *Number*
+
+1. 八进制使用`0o`，十六进制使用`0x`
+2. 如果出现`1.`和`12.0`这种的，会自动存储为整数
+3. 浮点数是有精度的，会出现`0.1+0.2 != 0.3`
+4. 使用`Number.MIN_VALUE`和`Number.MAX_VALUE`可以获取最小/最大值，使用`Number.NEGATIVE_INFINITY`和`Number.POSITIVE_INFINITY`可以获取负无穷/正无穷
+5. *NaN* 代表 *Not a Number*，用于表示本来要返回数值的操作失败
+   1. 任何带有 *NaN* 的操作返回都是 *NaN*
+   2. `NaN != NaN`
+   3. 使用`isNaN()`来判断是否为 *NaN*，该函数会想办法先将传入的数据转成数字，如`isNaN('10')`返回为`true`，因为先将`'10'`&rarr;`10`
+6. 数值转换
+   1. *Number()*
+      1. true &rarr; 1; false &rarr; 0
+      2. null &rarr; 0
+      3. undefined &rarr; NaN
+      4. "" &rarr; 0
+      5. "00112" &rarr; 112
+      6. "1.3415" &rarr; 1.3415
+      7. "0xF" &rarr; 15
+      8. "123abc" &rarr; NaN
+   2. *parseInt() & parseFloat()*: 从第一个非空格开始，如果不是+，-以及数字，则直接返回NaN，依次检查，直到遇到非数字。
+      1. true/false &rarr; NaN
+      2. null &rarr; NaN
+      3. undefined &rarr; NaN
+      4. "" &rarr; NaN
+      5. "00123" &rarr; 123
+      6. "1.34" &rarr; 1.34
+      7. "1.34.5" &rarr; 1.34
+      8. "123abc" &rarr; 123
+
+#### *String*
+
+1. 字符串是不可变的，一旦创建就不能改变。如要修改某个值，需要把原始字符串全部销毁，然后再赋予新值。
+2. 转换字符串使用`toString()`方法(*null*与*undefined*没有该方法)
+3. `String()`函数会先判断，如果有`toString()`，则调用；否则返回*null*或者*undefined*
+4. 标签函数可以让用户根据字符串中插入的数据进行处理
+```js
+// strings 保留除去${}剩下的部分，此处strings=["", " is a "]
+// person, age分别对应剩余的${}中内容
+const myTag(strings, person, age){
+    let info = null;
+    if(age>18){
+        info = "adult";
+    } else {
+        info = "child";
+    }
+    return strings[0] + person + strings[1] + info;
+};
+
+let person = "tom";
+let age = 19;
+const res = myTag(`${person} is a ${age}`); // tom is a adult
+```
+
+#### *Symbol*
+
+
+#### *Object*
+
+1. 对象是一组功能和属性的集合，使用 *new* 进行实例化
+2. *Object* 类是所有派生类的基类，其有如下属性和方法：
+   1. *constructor* 用于创建当前对象
+   2. *hasOwnProperty(propertyName)* 用于查询当前类是否含有 *propertyName* 的属性
+   3. *isPrototypeOf(objectName)* 用于判断当前类是否为 *objectName* 的原型
+   4. *propertyIsEnumerable(propertyName)* 用于属性可否用`for-in`进行枚举
+   5. *toString()* 用于返回字符串表示
+   6. *valueOf()* 返回对应的字符串、boolean和数值
+
+---
+
+### 操作符
