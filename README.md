@@ -1,0 +1,2 @@
+# JavaScript-cookbook
+JavaScript cookbook
